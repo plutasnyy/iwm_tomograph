@@ -1,7 +1,6 @@
 from PIL import Image
 from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
-import numpy as np
 from core.models.point import Point
 
 
@@ -34,19 +33,17 @@ class ImageProcessor(object):
         ]
 
     @staticmethod
-    # TODO debug why, for big quantity of iterations points_in_image is equal to 0 tested for big distraction,
-    #  so it is impossible
     def get_average_brightness_of_the_line(clear_copy_of_wrapped_image, points_in_image) -> int:
+        if len(points_in_image) == 0:
+            return 0
         sum = 0
         for point in points_in_image:
             r, g, b = clear_copy_of_wrapped_image.getpixel((point.x, point.y))
             sum += int((r + g + b) / 3)
-        if len(points_in_image) == 0:
-            return 0
         return int(sum / len(points_in_image))
 
     @staticmethod
-    def print_sinogram(sinogram):
+    def print_sinogram(sinogram) -> None:
         rgb_sinogram = [[(i, i, i) for i in _] for _ in sinogram]
         plt.imshow(rgb_sinogram)
         plt.show()
@@ -67,7 +64,7 @@ class ImageProcessor(object):
 
         return wrapped_image
 
-    def is_point_in_real_image(self, p):
+    def is_point_in_real_image(self, p) -> bool:
         """
         lb - left bottom corner
          ru - right upper corner
