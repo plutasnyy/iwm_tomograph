@@ -43,23 +43,20 @@ class ImageProcessor(object):
         return int(sum / len(points_in_image))
 
     @staticmethod
-    def print_sinogram(sinogram) -> None:
+    def print_one_dimension_image(sinogram) -> None:
         rgb_sinogram = [[(i, i, i) for i in _] for _ in sinogram]
         plt.imshow(rgb_sinogram)
         plt.show()
 
-    def wrap_image(self, image):
-        scale = 3
+    def wrap_image(self, image, size):
         width, height = image.size[0], image.size[1]
-        new_width, new_height = scale * width, scale * height
-        new_size = (width * scale, height * scale)
-        x_corner_to_paste = (new_width - width) // 2
-        y_corner_to_paste = (new_height - height) // 2
+        x_corner_to_paste = (size - width) // 2
+        y_corner_to_paste = (size - height) // 2
 
         self.real_image_coords = self.get_real_image_cords(x_corner_to_paste, y_corner_to_paste, width, height)
 
         grey = (210, 210, 210)
-        wrapped_image = Image.new("RGB", new_size, color=grey)
+        wrapped_image = Image.new("RGB", (size, size), color=grey)
         wrapped_image.paste(image, (x_corner_to_paste, y_corner_to_paste))
 
         return wrapped_image
