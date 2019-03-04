@@ -6,6 +6,7 @@ from core.models.emiter import Emiter
 
 from core.models.point import Point
 
+from PIL import Image
 import numpy as np
 
 from core.utils.imageprocessor import ImageProcessor
@@ -32,7 +33,7 @@ class Sinogram(object):
         clear_copy_of_wrapped_image = copy(wrapped_image)
 
         self.center = Point(wrapped_image.size[0] // 2, wrapped_image.size[1] // 2)
-        self.radius = sqrt(image.size[0] ** 2 + image.size[1] ** 2)
+        self.radius = sqrt(image.size[0] ** 2 + image.size[1] ** 2)*1.5
 
         degree_step = 2 * pi / self.iterations
         self.sinogram = np.zeros(shape=(self.quantity_of_detectors, self.iterations), dtype=np.int64)
@@ -60,6 +61,33 @@ class Sinogram(object):
 
         ImageProcessor.print_sinogram(self.sinogram)
         return self.sinogram
+
+    def sinogram_to_image(self):
+        degree_step = 2 * pi / self.iterations
+        degree_to_place_emiter_in_radians = 0
+        width = int(self.radius)
+
+        new_image = np.zeros(shape=(width, width))
+        counter = np.zeros(shape=(width, width))
+        for i in range(self.iterations):
+            degree_to_place_emiter_in_radians += degree_step
+            emiter = self._get_emiter(degree_to_place_emiter_in_radians)
+            detectors = self._get_detectors(degree_to_place_emiter_in_radians, self.dispersion)
+            for iw,detector in enumerate(detectors):
+                points = bresenham(detector, emiter)
+                value = self.sinogram[iw][i]
+                points_in_image = list(filter(self.image_processor.is_point_in_real_image, points))
+                for pon in points_in_image:
+                        new_image[pon.x, pon.y] += value
+                        counter[pon.x, pon.y] += 1
+                        if value<0.4:
+                            counter[pon.x, pon.y] += 50000
+        for i in range(width):
+            for t in range(width):
+                if counter[i][t]>0:
+                    new_image[i][t] = new_image[i][t]/counter[i][t]
+        ImageProcessor.print_sinogram(new_image)
+        return new_image
 
     def _get_emiter(self, degree_to_place_emiter: float) -> Emiter:
         x_emiter = int(self.radius * cos(degree_to_place_emiter) + self.center.x)
