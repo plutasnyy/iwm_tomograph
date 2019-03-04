@@ -58,7 +58,6 @@ def get_form(conf):
     )
 
     def process(_):
-        clear_output(wait="true")
         print(conf.image_path)
 
     def select_image(_):
