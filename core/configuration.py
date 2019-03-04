@@ -2,7 +2,8 @@ from math import pi
 
 
 class Configuration(object):
-    def __init__(self, iterations: int = 100, quantity_of_detectors: int = 50, dispersion: int = 90):
+    def __init__(self, iterations: int = 100, quantity_of_detectors: int = 50, dispersion: int = 90,
+                 image_path: str = 'images/Kropka.jpg'):
         """
         :param quantity_of_detectors:
         :param iterations: how many different positions will be collected
@@ -11,7 +12,7 @@ class Configuration(object):
         self.iterations = iterations
         self.quantity_of_detectors = quantity_of_detectors
         self.dispersion = dispersion
-        self.image_path = None
+        self.image_path = image_path
 
     def set_iterations(self, x: int):
         self.iterations = x

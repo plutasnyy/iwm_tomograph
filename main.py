@@ -2,7 +2,7 @@ from core.configuration import Configuration
 from core.sinogram import Sinogram
 from PIL import Image
 
-image = Image.open('images/SADDLE_PE-large.JPG')
+image = Image.open('images/Kropka.jpg')
 conf = Configuration(
     iterations=70,
     quantity_of_detectors=10,
