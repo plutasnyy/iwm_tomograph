@@ -1,6 +1,9 @@
 from copy import copy
+
+from IPython.core.display import clear_output
 from math import pi, cos, sin, sqrt
 
+from core.configuration import Configuration
 from core.models.detector import Detector
 from core.models.emiter import Emiter
 
@@ -14,16 +17,10 @@ from core.utils.bresenham import bresenham
 
 class Sinogram(object):
 
-    def __init__(self, quantity_of_detectors: int, iterations: int, dispersion: float) -> None:
-        """
-        :param quantity_of_detectors:
-        :param iterations: how many different positions will be collected
-        :param dispersion: a space between successive ones detectors
-        """
+    def __init__(self, conf: Configuration) -> None:
         self.image_processor = ImageProcessor()
-        self.quantity_of_detectors = quantity_of_detectors
-        self.iterations = iterations
-        self.dispersion = dispersion
+        self.conf = conf
+        self.emiter_degrees = np.linspace(0, 2 * pi, self.conf.iterations)
         [self.center, self.radius, self.sinogram] = [None for _ in range(3)]
 
     def create_sinogram_from_image(self, image):
@@ -34,17 +31,15 @@ class Sinogram(object):
         self.center = Point(wrapped_image.size[0] // 2, wrapped_image.size[1] // 2)
         self.radius = sqrt(image.size[0] ** 2 + image.size[1] ** 2)
 
-        degree_step = 2 * pi / self.iterations
-        self.sinogram = np.zeros(shape=(self.quantity_of_detectors, self.iterations), dtype=np.int64)
-        degree_to_place_emiter_in_radians = 0
+        self.sinogram = np.zeros(shape=(self.conf.quantity_of_detectors, self.conf.iterations), dtype=np.int64)
 
-        for iteration in range(self.iterations):
+        for iteration, emiter_degree in enumerate(self.emiter_degrees):
             if not iteration % 25:
-                print(iteration)
+                clear_output(wait="true")
+                yield iteration, self.sinogram
 
-            degree_to_place_emiter_in_radians += degree_step
-            emiter = self._get_emiter(degree_to_place_emiter_in_radians)
-            detectors = self._get_detectors(degree_to_place_emiter_in_radians, self.dispersion)
+            emiter = self._get_emiter(emiter_degree)
+            detectors = self._get_detectors(emiter_degree)
             # self.image_processor.print_detector_on_image(emiter, detectors, wrapped_image)
 
             for i, detector in enumerate(detectors):
@@ -58,6 +53,7 @@ class Sinogram(object):
                     points_in_image
                 )
 
+        clear_output(wait="true")
         ImageProcessor.print_sinogram(self.sinogram)
         return self.sinogram
 
@@ -66,16 +62,16 @@ class Sinogram(object):
         y_emiter = int(self.radius * sin(degree_to_place_emiter) + self.center.y)
         return Emiter(x_emiter, y_emiter)
 
-    def _get_detectors(self, degree_to_place_emiter: float, dispersion: float) -> list:
+    def _get_detectors(self, degree_to_place_emiter: float) -> list:
         """
         :param degree_to_place_emiter: in radians 0 - right side
-        :param dispersion: in radians - if pi, half of circle will be covered
         """
         detectors = list()
-        for i in range(self.quantity_of_detectors):
+        dispersion = self.conf.get_dispersion_in_radians()
+        for i in range(self.conf.quantity_of_detectors):
             x_detector = int(self.radius * cos(degree_to_place_emiter + pi - dispersion / 2 + i * dispersion / (
-                        self.quantity_of_detectors - 1)) + self.center.x)
+                    self.conf.quantity_of_detectors - 1)) + self.center.x)
             y_detector = int(self.radius * sin(degree_to_place_emiter + pi - dispersion / 2 + i * dispersion / (
-                        self.quantity_of_detectors - 1)) + self.center.y)
+                    self.conf.quantity_of_detectors - 1)) + self.center.y)
             detectors.append(Detector(x_detector, y_detector))
         return detectors

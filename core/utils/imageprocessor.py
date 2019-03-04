@@ -64,10 +64,10 @@ class ImageProcessor(object):
 
         return wrapped_image
 
-    def is_point_in_real_image(self, p) -> bool:
+    def is_point_in_real_image(self, p: Point) -> bool:
         """
         lb - left bottom corner
-         ru - right upper corner
+        ru - right upper corner
         :param p: point
         :return: True if point is between real_image_coords
         """
