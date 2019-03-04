@@ -26,9 +26,9 @@ class Sinogram(object):
 
     def create_sinogram_from_image(self, image):
 
-        self.radius = int(np.ceil(sqrt(image.size[0] ** 2 + image.size[1] ** 2) / 2))
+        self.radius = int(np.ceil(sqrt(image.size[0] ** 2 + image.size[1] ** 2)))
 
-        wrapped_image = self.image_processor.wrap_image(image, self.radius*2)
+        wrapped_image = self.image_processor.wrap_image(image, self.radius * 3)
         clear_copy_of_wrapped_image = copy(wrapped_image)
 
         self.center = Point(wrapped_image.size[0] // 2, wrapped_image.size[1] // 2)
@@ -41,6 +41,9 @@ class Sinogram(object):
 
             emiter = self._get_emiter(emiter_degree)
             detectors = self._get_detectors(emiter_degree)
+
+            if iteration == 0:
+                self.image_processor.print_detector_on_image(emiter, detectors, wrapped_image)
 
             for i, detector in enumerate(detectors):
                 points = bresenham(detector, emiter)

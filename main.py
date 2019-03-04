@@ -2,11 +2,11 @@ from core.configuration import Configuration
 from core.sinogram import Sinogram
 from PIL import Image
 
-image = Image.open('images/Shepp_logan.jpg')
+image = Image.open('images/{}'.format('CT_ScoutView.jpg'))
 conf = Configuration(
-    iterations=360,
-    quantity_of_detectors=100,
-    dispersion=12,
+    iterations=180,
+    quantity_of_detectors=120,
+    dispersion=60,
 )
 
 sinogram = Sinogram(conf)
