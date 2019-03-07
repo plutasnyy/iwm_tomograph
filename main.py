@@ -2,11 +2,11 @@ from core.configuration import Configuration
 from core.sinogram import Sinogram
 from PIL import Image
 
-image = Image.open('images/{}'.format('CT_ScoutView.jpg'))
+image = Image.open('images/{}'.format('Kwadraty2.jpg'))
 conf = Configuration(
-    iterations=180,
+    iterations=120,
     quantity_of_detectors=120,
-    dispersion=60,
+    dispersion=180,
 )
 
 sinogram = Sinogram(conf)

@@ -2,6 +2,7 @@ from PIL import Image
 from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
 from core.models.point import Point
+import numpy as np
 
 
 class ImageProcessor(object):
@@ -48,6 +49,15 @@ class ImageProcessor(object):
         plt.imshow(rgb_sinogram)
         plt.show()
 
+    @staticmethod
+    def normalize_image(image):
+        max = np.amax(image)
+        for i in range(len(image)):
+            for j in range(len(image[i])):
+                if max != 0:
+                    image[i][j] = round(image[i][j] / max * 255)
+        return image
+
     def wrap_image(self, image, size):
         width, height = image.size[0], image.size[1]
         x_corner_to_paste = (size - width) // 2
@@ -55,7 +65,7 @@ class ImageProcessor(object):
 
         self.real_image_coords = self.get_real_image_cords(x_corner_to_paste, y_corner_to_paste, width, height)
 
-        grey = (210, 210, 210)
+        grey = (120, 120, 120)
         wrapped_image = Image.new("RGB", (size, size), color=grey)
         wrapped_image.paste(image, (x_corner_to_paste, y_corner_to_paste))
 
