@@ -8,7 +8,7 @@ from core.models.detector import Detector
 from core.models.emiter import Emiter
 
 from core.models.point import Point
-
+import matplotlib.pyplot as plt
 import numpy as np
 
 from core.utils.imageprocessor import ImageProcessor
@@ -83,9 +83,11 @@ class Sinogram(object):
                     image[x][y] /= counter[x][y]
 
         image = self.image_processor.normalize_image(image)
-
+		
         ImageProcessor.print_one_dimension_image(np.transpose(image))
-
+		plt.figure()
+		plt.imshow(image) 
+		plt.show() 
         return image
 
     def _get_emiter(self, degree_to_place_emiter: float) -> Emiter:
