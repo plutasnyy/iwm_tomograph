@@ -1,11 +1,9 @@
-from IPython.core.display import clear_output
-
-from core.utils.fileselector import gui_get_file_name
+from core.utils.file_selector import gui_get_file_name
 import ipywidgets as widgets
 from ipywidgets import Layout, Box, Label, interactive
 
-def get_form(conf):
 
+def get_setup_form(conf):
     iterations = widgets.IntSlider(
         value=conf.iterations,
         min=10,
@@ -88,4 +86,3 @@ def get_form(conf):
     ))
 
     return form
-	

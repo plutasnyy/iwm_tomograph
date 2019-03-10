@@ -1,11 +1,8 @@
-from IPython.core.display import clear_output
-
-from core.utils.fileselector import gui_get_file_name
 import ipywidgets as widgets
-from ipywidgets import Layout, Box, Label, interactive, Text
+from ipywidgets import Layout, Box, Label, interactive
 
 
-def get_form2(conf):
+def get_dicom_form(conf):
     name = widgets.Text(
         value=conf.name,
         placeholder='Type something',
