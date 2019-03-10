@@ -3,7 +3,7 @@ from copy import copy
 from IPython.core.display import clear_output
 from math import pi, cos, sin, sqrt
 
-from core.configuration import Configuration
+from configuration.setup_configuration import SetupConfiguration
 from core.models.detector import Detector
 from core.models.emiter import Emiter
 
@@ -11,13 +11,13 @@ from core.models.point import Point
 import matplotlib.pyplot as plt
 import numpy as np
 
-from core.utils.imageprocessor import ImageProcessor
+from core.utils.image_processor import ImageProcessor
 from core.utils.bresenham import bresenham
 
 
 class Sinogram(object):
 
-    def __init__(self, conf: Configuration) -> None:
+    def __init__(self, conf: SetupConfiguration) -> None:
         self.image_processor = ImageProcessor()
         self.conf = conf
         self.emiter_degrees = np.linspace(0, 2 * pi, self.conf.iterations)

@@ -1,10 +1,11 @@
-from core.configuration import Configuration
+from configuration.setup_configuration import SetupConfiguration
 from core.sinogram import Sinogram
 from PIL import Image
 
 image = Image.open('images/{}'.format('Shepp_logan.jpg'))
-conf = Configuration(
-`
+conf = SetupConfiguration(
+    iterations=720,
+    quantity_of_detectors=360,
     dispersion=180,
 )
 

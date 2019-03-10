@@ -49,7 +49,7 @@ def get_form2(conf):
     form_items = [
         Box([Label(value='Name'), interactive(conf.set_name, x=name)], layout=form_item_layout),
         Box([Label(value='ID'), interactive(conf.set_id, x=id)], layout=form_item_layout),
-        Box([Label(value='Description'), interactive(conf.set_des, x=des)], layout=form_item_layout),
+        Box([Label(value='Description'), interactive(conf.set_destination, x=des)], layout=form_item_layout),
         Box([process_button], layout=form_item_layout)
     ]
 
