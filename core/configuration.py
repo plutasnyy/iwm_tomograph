@@ -3,7 +3,8 @@ from math import pi
 
 class Configuration(object):
     def __init__(self, iterations: int = 100, quantity_of_detectors: int = 50, dispersion: int = 90,
-                 image_path: str = 'images/Kropka.jpg',name: str = 'Kamil Plucisnki', id: str = '132307', des: str = 'none',filename: str = 'test.dcm'):
+                 image_path: str = 'images/Kropka.jpg', name: str = 'Kamil Plucisnki', id: str = '132307',
+                 des: str = 'none', filename: str = 'test.dcm'):
         """
         :param quantity_of_detectors:
         :param iterations: how many different positions will be collected
@@ -32,15 +33,15 @@ class Configuration(object):
 
     def set_name(self, x: str):
         self.name = x
-		
-    def set_id(self,x: str):
+
+    def set_id(self, x: str):
         self.id = x
-		
-    def set_des(self,x: str):
+
+    def set_des(self, x: str):
         self.des = x
-	
-    def set_filename(self,x: str):
+
+    def set_filename(self, x: str):
         self.filename = x
-		
+
     def get_dispersion_in_radians(self):
         return self.dispersion / 360 * 2 * pi
