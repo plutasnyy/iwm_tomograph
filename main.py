@@ -1,8 +1,8 @@
-from configuration.configuration_agregator import ConfigurationAggregator
+from core.configuration.configuration_agregator import ConfigurationAggregator
 from core.sinogram import Sinogram
+from core.image_processor import ImageProcessor
 from PIL import Image
 
-from image_processor import ImageProcessor
 
 images_dict = {
     1: "CT_ScoutView.jpg",
@@ -17,15 +17,15 @@ images_dict = {
 
 image = Image.open('images/{}'.format(images_dict[2])).convert('L')
 conf = ConfigurationAggregator(
-    iterations=100,
+    iterations=1,
     quantity_of_detectors=100,
     dispersion=180,
 )
 
 sinogram = Sinogram(conf)
 for iteration, _ in sinogram.create_sinogram_from_image(image):
-    print(iteration)
+    print('Iteration: {}'.format(iteration))
 
 sinogram.sinogram_to_image()
 
-print(ImageProcessor.calculate_medium_squared_error(image, sinogram.image))
+print('MSE: {0:0.2f}'.format(ImageProcessor.calculate_medium_squared_error(image, sinogram.image)))

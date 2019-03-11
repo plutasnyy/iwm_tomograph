@@ -1,9 +1,10 @@
+from core.configuration.configuration_agregator import ConfigurationAggregator
 from core.utils.file_selector import gui_get_file_name
 import ipywidgets as widgets
 from ipywidgets import Layout, Box, Label, interactive
 
 
-def get_setup_form(conf):
+def get_setup_form(conf: ConfigurationAggregator):
     iterations = widgets.IntSlider(
         value=conf.iterations,
         min=10,

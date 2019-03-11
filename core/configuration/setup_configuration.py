@@ -3,7 +3,7 @@ from math import pi
 
 class SetupConfiguration(object):
     def __init__(self, iterations: int = 100, quantity_of_detectors: int = 50, dispersion: int = 90,
-                 image_path: str = 'images/Kropka.jpg', is_step_by_step: bool = False, step_size: int = 25):
+                 image_path: str = 'images/Kropka.jpg', is_step_by_step: bool = True, step_size: int = 25):
         """
         :param iterations: how many different positions will be collected
         :param quantity_of_detectors:

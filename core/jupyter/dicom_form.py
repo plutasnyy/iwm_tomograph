@@ -1,8 +1,10 @@
 import ipywidgets as widgets
 from ipywidgets import Layout, Box, Label, interactive
 
+from core.configuration.configuration_agregator import ConfigurationAggregator
 
-def get_dicom_form(conf):
+
+def get_dicom_form(conf: ConfigurationAggregator):
     name = widgets.Text(
         value=conf.name,
         placeholder='Type something',
@@ -17,15 +19,15 @@ def get_dicom_form(conf):
         disabled=False
     )
 
-    des = widgets.Text(
-        value=conf.des,
+    destination = widgets.Text(
+        value=conf.destination,
         placeholder='Type something',
         description='String:',
         disabled=False
     )
 
-    filename = widgets.Text(
-        value=conf.filename,
+    file_name = widgets.Text(
+        value=conf.file_name,
         placeholder='Type something',
         description='String:',
         disabled=False
@@ -46,7 +48,7 @@ def get_dicom_form(conf):
     form_items = [
         Box([Label(value='Name'), interactive(conf.set_name, x=name)], layout=form_item_layout),
         Box([Label(value='ID'), interactive(conf.set_id, x=id)], layout=form_item_layout),
-        Box([Label(value='Description'), interactive(conf.set_destination, x=des)], layout=form_item_layout),
+        Box([Label(value='Description'), interactive(conf.set_destination, x=destination)], layout=form_item_layout),
         Box([process_button], layout=form_item_layout)
     ]
 

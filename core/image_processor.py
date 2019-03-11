@@ -1,10 +1,10 @@
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
 from matplotlib.patches import Circle
-import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
 
 from core.models.point import Point
-import numpy as np
 
 
 class ImageProcessor(object):

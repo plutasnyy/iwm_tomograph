@@ -1,6 +1,6 @@
-from configuration.dicom_configuration import DicomConfiguration
-from configuration.filter_configuration import FilterConfiguration
-from configuration.setup_configuration import SetupConfiguration
+from core.configuration.dicom_configuration import DicomConfiguration
+from core.configuration.filter_configuration import FilterConfiguration
+from core.configuration.setup_configuration import SetupConfiguration
 
 
 class ConfigurationAggregator(SetupConfiguration, FilterConfiguration, DicomConfiguration):

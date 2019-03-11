@@ -13,14 +13,14 @@ class DicomConfiguration(object):
         self.destination = destination
         self.file_name = file_name
 
-        def set_name(self, x: str):
-            self.name = x
+    def set_name(self, x: str):
+        self.name = x
 
-        def set_id(self, x: str):
-            self.id = x
+    def set_id(self, x: str):
+        self.id = x
 
-        def set_destination(self, x: str):
-            self.destination = x
+    def set_destination(self, x: str):
+        self.destination = x
 
-        def set_file_name(self, x: str):
-            self.file_name = x
+    def set_file_name(self, x: str):
+        self.file_name = x

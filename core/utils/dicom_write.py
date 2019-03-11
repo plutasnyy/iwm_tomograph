@@ -1,7 +1,6 @@
-import dicom, dicom.UID
-from dicom.dataset import Dataset, FileDataset
 import numpy as np
 import datetime, time
+from pydicom.dataset import Dataset, FileDataset
 
 
 def write_dicom(filename, pixel_array, name, id, des):

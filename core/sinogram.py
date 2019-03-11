@@ -1,17 +1,17 @@
+import numpy as np
+
 from copy import copy
-
-from IPython.core.display import clear_output
 from math import pi, cos, sin, sqrt
+from IPython.core.display import clear_output
 
-from configuration.configuration_agregator import ConfigurationAggregator
+from core.image_processor import ImageProcessor
+from core.utils.bresenham import bresenham
+
+from core.configuration.configuration_agregator import ConfigurationAggregator
 from core.models.detector import Detector
 from core.models.emiter import Emiter
 
 from core.models.point import Point
-import numpy as np
-
-from image_processor import ImageProcessor
-from core.utils.bresenham import bresenham
 
 
 class Sinogram(object):
