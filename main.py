@@ -20,7 +20,6 @@ conf = ConfigurationAggregator(
     iterations=100,
     quantity_of_detectors=100,
     dispersion=180,
-    is_filter=False,
 )
 
 sinogram = Sinogram(conf)
