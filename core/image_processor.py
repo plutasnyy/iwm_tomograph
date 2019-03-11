@@ -1,6 +1,8 @@
 from PIL import Image
 from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
+from scipy.ndimage import gaussian_filter
+
 from core.models.point import Point
 import numpy as np
 
@@ -55,8 +57,18 @@ class ImageProcessor(object):
         for i in range(len(image)):
             for j in range(len(image[i])):
                 if max != 0:
-                    image[i][j] = round(image[i][j] / max * 255)
-        return image
+                    image[i][j] = int(round(image[i][j] / max * 255))
+        return image.astype(np.uint8)
+
+    @staticmethod
+    def add_filter(conf, image):
+        result_image = image ** conf.gamma
+        result_image = gaussian_filter(result_image, sigma=conf.gauss)
+        return result_image
+
+    @staticmethod
+    def calculate_medium_squared_error(base_image, result_image):
+        return ((base_image - np.transpose(result_image)) ** 2).mean()
 
     def wrap_image(self, image, size):
         width, height = image.size[0], image.size[1]
@@ -80,3 +92,7 @@ class ImageProcessor(object):
         """
         lb, ru = self.real_image_coords[0], self.real_image_coords[3]  #
         return lb.x <= p.x <= ru.x and lb.y <= p.y <= ru.y
+
+    def trim_real_image(self, image):
+        lb, ru = self.real_image_coords[0], self.real_image_coords[3]  #
+        return image[lb.y:ru.y + 1, lb.x:ru.x + 1]
