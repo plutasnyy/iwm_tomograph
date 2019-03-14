@@ -1,6 +1,6 @@
 class DicomConfiguration(object):
     def __init__(self, name: str = 'Kamil Plucisnki', id: str = '132307',
-                 destination: str = 'none', file_name: str = 'test.dcm'):
+                 destination: str = 'none', file_name: str = 'test.dcm',image_path: str = 'images/Kropka.jpg'):
         """
         :param name:
         :param id:
@@ -12,6 +12,7 @@ class DicomConfiguration(object):
         self.id = id
         self.destination = destination
         self.file_name = file_name
+        self.image_path = image_path
 
     def set_name(self, x: str):
         self.name = x
