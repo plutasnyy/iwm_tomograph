@@ -2,7 +2,8 @@ from core.configuration.configuration_agregator import ConfigurationAggregator
 from core.utils.file_selector import gui_get_file_name
 import ipywidgets as widgets
 from ipywidgets import Layout, Box, Label, interactive
-
+from core.sinogram import Sinogram
+from PIL import Image
 
 def get_setup_form(conf: ConfigurationAggregator):
     iterations = widgets.IntSlider(
@@ -47,6 +48,17 @@ def get_setup_form(conf: ConfigurationAggregator):
         tooltip='Click me',
         icon='fa-arrow-right'
     )
+    step_size = widgets.IntSlider(
+        value=conf.step_size,
+        min=10,
+        max=500,
+        step=10,
+        disabled=False,
+        continuous_update=False,
+        orientation='horizontal',
+        readout=True,
+        readout_format='d',
+    )
 
     select_image_button = widgets.Button(
         description='Select Image',
@@ -54,7 +66,12 @@ def get_setup_form(conf: ConfigurationAggregator):
         tooltip='Click me',
         icon='fa-image'
     )
-
+	
+    is_step_by_step = widgets.RadioButtons(
+        options=[True, False],
+#        value=conf.is_step_by_step,
+        disabled=False
+	)
     def process(_):
         print(conf.image_path)
 
@@ -75,6 +92,10 @@ def get_setup_form(conf: ConfigurationAggregator):
         Box([Label(value='Quantity of detectors'),
              interactive(conf.set_quantity_of_detectors, x=quantity_of_detectors)], layout=form_item_layout),
         Box([Label(value='Dispersion (in degrees)'), interactive(conf.set_dispersion, x=dispersion)],
+            layout=form_item_layout),
+        Box([Label(value='Step size'), interactive(conf.set_step_size, x=step_size)],
+            layout=form_item_layout),
+        Box([Label(value='Step by step'), interactive(conf.set_is_step_by_step, x=is_step_by_step)],
             layout=form_item_layout),
         Box([select_image_button, process_button], layout=form_item_layout)
     ]
