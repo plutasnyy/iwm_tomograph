@@ -32,16 +32,12 @@ class Sinogram(object):
         self.center = Point(wrapped_image.size[0] // 2, wrapped_image.size[1] // 2)
         self.sinogram = np.zeros(shape=(self.conf.quantity_of_detectors, self.conf.iterations), dtype=np.int64)
 
-        for iteration, emiter_degree in enumerate(self.emiter_degrees):
-            if self.conf.is_step_by_step and not iteration % self.conf.step_size:
-                clear_output(wait="true")
-                yield iteration, self.sinogram
+        iterations_to_update = [0]
+        iterations_to_update.extend(i - 1 for i in range(1, self.conf.iterations + 1) if not i % self.conf.step_size)
 
+        for iteration, emiter_degree in enumerate(self.emiter_degrees):
             emiter = self._get_emiter(emiter_degree)
             detectors = self._get_detectors(emiter_degree)
-
-            if iteration == 0:
-                self.image_processor.print_detector_on_image(emiter, detectors, wrapped_image)
 
             for i, detector in enumerate(detectors):
                 points = bresenham(detector, emiter)
@@ -52,10 +48,17 @@ class Sinogram(object):
                     points_in_image
                 )
 
-        clear_output(wait="true")
-        self.sinogram = self.image_processor.normalize_image(self.sinogram)
+            if self.conf.is_step_by_step and iteration in iterations_to_update:
+                clear_output(wait=True)
+                print('Iteration: {}/{}'.format(iteration + 1, self.conf.iterations))
+                self.image_processor.print_detector_on_image(emiter, detectors, wrapped_image)
+                self.image_processor.print_one_dimension_image(self.sinogram)
+                yield iteration
 
-        ImageProcessor.print_one_dimension_image(self.sinogram)
+        print("After normalization")
+        self.sinogram = self.image_processor.normalize_image(self.sinogram)
+        self.image_processor.print_one_dimension_image(self.sinogram)
+
         return self.sinogram
 
     def sinogram_to_image(self):
@@ -85,6 +88,7 @@ class Sinogram(object):
             image = self.image_processor.add_filter(self.conf, image)
         image = self.image_processor.normalize_image(image)
         self.image = np.transpose(self.image_processor.trim_real_image(image))
+        self.conf.image = self.image
 
         ImageProcessor.print_one_dimension_image(self.image)
         return self.image
