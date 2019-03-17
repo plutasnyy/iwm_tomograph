@@ -1,6 +1,6 @@
 import numpy as np
 
-from copy import copy
+from copy import copy, deepcopy
 from math import pi, cos, sin, sqrt
 from IPython.core.display import clear_output
 
@@ -20,6 +20,7 @@ class Sinogram(object):
         self.image_processor = ImageProcessor()
         self.conf = conf
         self.emiter_degrees = np.linspace(0, 2 * pi, self.conf.iterations)
+        self.mask = [-1, 3, -1]
         [self.center, self.radius, self.sinogram, self.image] = [None for _ in range(4)]
 
     def create_sinogram_from_image(self, image):
@@ -34,6 +35,7 @@ class Sinogram(object):
 
         iterations_to_update = [0]
         iterations_to_update.extend(i - 1 for i in range(1, self.conf.iterations + 1) if not i % self.conf.step_size)
+        iterations_to_update.append(self.conf.iterations-1)
 
         for iteration, emiter_degree in enumerate(self.emiter_degrees):
             emiter = self._get_emiter(emiter_degree)
@@ -55,8 +57,23 @@ class Sinogram(object):
                 self.image_processor.print_one_dimension_image(self.sinogram)
                 yield iteration
 
-        print("After normalization")
-        self.sinogram = self.image_processor.normalize_image(self.sinogram)
+        if self.conf.is_filter:
+            for col in range(self.sinogram.shape[1]):
+                column = self.sinogram[:, col]
+                new_column = list()
+                for i in range(len(column)):
+                    if 1 <= i <= len(column) - 2:
+                        local_sum = 0
+                        for j in range(len(self.mask)):
+                            local_sum += self.sinogram[i + j - 1, col] * self.mask[j]
+                        new_column.append(local_sum)
+                    else:
+                        new_column.append(self.sinogram[i][col])
+                self.sinogram[:, col] = deepcopy(new_column)
+            print("Filter")
+
+        print("Normalization")
+        self.image_processor.normalize_image(self.sinogram)
         self.image_processor.print_one_dimension_image(self.sinogram)
 
         return self.sinogram
@@ -84,8 +101,6 @@ class Sinogram(object):
                 if counter[x][y] != 0:
                     image[x][y] /= counter[x][y]
 
-        if self.conf.is_filter:
-            image = self.image_processor.add_filter(self.conf, image)
         image = self.image_processor.normalize_image(image)
         self.image = np.transpose(self.image_processor.trim_real_image(image))
         self.conf.image = self.image

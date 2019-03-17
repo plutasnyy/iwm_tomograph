@@ -57,14 +57,9 @@ class ImageProcessor(object):
         for i in range(len(image)):
             for j in range(len(image[i])):
                 if max != 0:
-                    image[i][j] = int(round(image[i][j] / max * 255))
+                    x = int(round(image[i][j] / max * 255))
+                    image[i][j] = x if x > 0 else 0
         return image.astype(np.uint8)
-
-    @staticmethod
-    def add_filter(conf, image):
-        result_image = image ** conf.gamma
-        result_image = gaussian_filter(result_image, sigma=conf.gauss)
-        return result_image
 
     @staticmethod
     def calculate_medium_squared_error(base_image, result_image):

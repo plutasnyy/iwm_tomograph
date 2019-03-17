@@ -11,7 +11,7 @@ from core.image_processor import ImageProcessor
 def get_setup_form(conf: ConfigurationAggregator):
     iterations = widgets.IntSlider(
         value=conf.iterations,
-        min=10,
+        min=1,
         max=500,
         step=10,
         disabled=False,
@@ -24,7 +24,7 @@ def get_setup_form(conf: ConfigurationAggregator):
 
     quantity_of_detectors = widgets.IntSlider(
         value=conf.quantity_of_detectors,
-        min=10,
+        min=1,
         max=1000,
         step=10,
         disabled=False,
@@ -82,28 +82,6 @@ def get_setup_form(conf: ConfigurationAggregator):
         disabled=False
     )
 
-    gamma = widgets.FloatSlider(
-        min=0.1,
-        max=1,
-        step=0.05,
-        value=conf.gamma,
-        orientation='horizontal',
-        readout=True,
-        readout_format='.2f',
-        description=' ',
-    )
-
-    gauss = widgets.FloatSlider(
-        min=0.1,
-        max=1,
-        step=0.05,
-        value=conf.gauss,
-        orientation='horizontal',
-        readout=True,
-        readout_format='.2f',
-        description=' ',
-    )
-
     def select_image(_):
         conf.image_path = gui_get_file_name()
 
@@ -126,10 +104,6 @@ def get_setup_form(conf: ConfigurationAggregator):
         Box([Label(value='Step size'), interactive(conf.set_step_size, x=step_size)],
             layout=form_item_layout),
         Box([Label(value='Filter'), interactive(conf.set_filter, x=is_filter)],
-            layout=form_item_layout),
-        Box([Label(value='Gamma'), interactive(conf.set_gamma, x=gamma)],
-            layout=form_item_layout),
-        Box([Label(value='Gauss'), interactive(conf.set_gauss, x=gauss)],
             layout=form_item_layout),
         Box([select_image_button], layout=form_item_layout)
     ]

@@ -18,13 +18,14 @@ images_dict = {
 image = Image.open('images/{}'.format(images_dict[2])).convert('L')
 conf = ConfigurationAggregator(
     iterations=1,
-    quantity_of_detectors=100,
+    quantity_of_detectors=10,
     dispersion=180,
 )
 
 sinogram = Sinogram(conf)
-for iteration, _ in sinogram.create_sinogram_from_image(image):
-    print('Iteration: {}'.format(iteration))
+for _ in sinogram.create_sinogram_from_image(image):
+    pass
+    # print('Iteration: {}'.format(iteration))
 
 sinogram.sinogram_to_image()
 

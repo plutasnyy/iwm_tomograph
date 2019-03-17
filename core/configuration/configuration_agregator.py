@@ -21,11 +21,9 @@ class ConfigurationAggregator(SetupConfiguration, FilterConfiguration, DicomConf
         :param file_name:
 
         FILTER
-        :param gamma:
-        :param gauss:
         :param is_filter:
         """
         super().__init__()
         allowed_keys = ['iterations', 'quantity_of_detectors', 'dispersion', 'image_path', 'name', 'id', 'destination',
-                        'file_name', 'gauss', 'gamma', 'is_filter', 'is_step_by_step', 'step_size']
+                        'file_name', 'is_filter', 'is_step_by_step', 'step_size']
         self.__dict__.update((key, value) for key, value in kwargs.items() if key in allowed_keys)
