@@ -2,9 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from matplotlib.patches import Circle
-from scipy.ndimage import gaussian_filter
-
+import string, random
 from core.models.point import Point
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 class ImageProcessor(object):
@@ -25,6 +28,7 @@ class ImageProcessor(object):
             ax.add_patch(circle)
             plt.plot(*line_cords, linewidth=0.5, color='#95d4ed')
         plt.show()
+        # plt.savefig("{}.png".format(id_generator()))
 
     @staticmethod
     def get_real_image_cords(x: int, y: int, width: int, height: int) -> list:
@@ -51,6 +55,9 @@ class ImageProcessor(object):
         plt.imshow(rgb_sinogram)
         plt.show()
 
+        # import matplotlib.image as mpimg
+        # mpimg.imsave("result_sheep_{}.png".format(id_generator()), rgb_sinogram)
+
     @staticmethod
     def normalize_image(image):
         max = np.amax(image)
@@ -63,7 +70,8 @@ class ImageProcessor(object):
 
     @staticmethod
     def calculate_medium_squared_error(base_image, result_image):
-        return ((base_image - np.transpose(result_image)) ** 2).mean()
+        base_image = np.asarray(base_image, dtype="int64")
+        return ((base_image-result_image)**2).mean()
 
     def wrap_image(self, image, size):
         width, height = image.size[0], image.size[1]

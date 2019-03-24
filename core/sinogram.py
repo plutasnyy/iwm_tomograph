@@ -70,9 +70,9 @@ class Sinogram(object):
                     else:
                         new_column.append(self.sinogram[i][col])
                 self.sinogram[:, col] = deepcopy(new_column)
-            print("Filter")
-
-        print("Normalization")
+        #     print("Filter")
+        #
+        # print("Normalization")
         self.image_processor.normalize_image(self.sinogram)
         self.image_processor.print_one_dimension_image(self.sinogram)
 

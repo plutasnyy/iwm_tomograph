@@ -2,10 +2,6 @@ from core.configuration.configuration_agregator import ConfigurationAggregator
 from core.utils.file_selector import gui_get_file_name
 import ipywidgets as widgets
 from ipywidgets import Layout, Box, Label, interactive
-from core.sinogram import Sinogram
-from PIL import Image
-
-from core.image_processor import ImageProcessor
 
 
 def get_setup_form(conf: ConfigurationAggregator):
@@ -24,7 +20,7 @@ def get_setup_form(conf: ConfigurationAggregator):
 
     quantity_of_detectors = widgets.IntSlider(
         value=conf.quantity_of_detectors,
-        min=1,
+        min=2,
         max=1000,
         step=10,
         disabled=False,
