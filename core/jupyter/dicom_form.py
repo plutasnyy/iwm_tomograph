@@ -1,12 +1,13 @@
 import ipywidgets as widgets
+import pydicom
 from ipywidgets import Layout, Box, Label, interactive
-
+import matplotlib.pyplot as plt
 from core.utils.dicom_write import write_dicom
 from core.configuration.configuration_agregator import ConfigurationAggregator
 from numpy import array
 
 
-def get_dicom_form(conf: ConfigurationAggregator):
+def get_dicom_form(conf: ConfigurationAggregator, image):
     name = widgets.Text(
         value=conf.name,
         placeholder='Type something',
@@ -48,7 +49,7 @@ def get_dicom_form(conf: ConfigurationAggregator):
     )
 
     def process(_):
-        pixel_array = array(conf.image)
+        pixel_array = array(image)
         file_name = '{}.dcm'.format(conf.file_name)
         write_dicom(file_name, pixel_array, conf.name, conf.id, conf.destination)
 
@@ -70,3 +71,15 @@ def get_dicom_form(conf: ConfigurationAggregator):
     ))
 
     return form
+
+
+def read_dicom(path):
+    ds = pydicom.dcmread(path)
+    print(ds.PatientName)
+    print(ds.PatientID)
+    print(ds.PatientComments)
+    ds.file_meta.TransferSyntaxUID = pydicom.uid.ImplicitVRLittleEndian
+
+    arr = ds.pixel_array
+    plt.imshow(arr, cmap='gray')
+    plt.show()
