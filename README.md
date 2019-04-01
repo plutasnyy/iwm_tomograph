@@ -19,4 +19,23 @@ conda install -c conda-forge ipywidgets
 ```
 
 ### Steps
-![]('docs/1.png')
+
+Load an image
+
+![](docs/1.png)
+
+Place the image in bigger image. Calculate positions of and emiter and detectors, calculate lines between devices using bresnhman algorithm.
+
+![](docs/2.png)
+
+Create singoram column using average value of every line. Move devices and repeat for every degree.
+
+![](docs/3.png)
+
+Construct image from averages of lines using sinogram.
+
+![](docs/4.png)
+ 
+ ### GUI
+ 
+![](docs/9.png)
