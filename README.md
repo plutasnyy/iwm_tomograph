@@ -17,3 +17,6 @@ With conda:
 ```
 conda install -c conda-forge ipywidgets
 ```
+
+### Steps
+![]('docs/1.png')
